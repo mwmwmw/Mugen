@@ -1,0 +1,22 @@
+{
+  "name": "musicgenerator",
+  "version": "1.0.0",
+  "description": "An algoritmic music generator",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "start": "webpack-dev-server --mode development"
+  },
+  "author": "Matthew Willox",
+  "license": "MIT",
+  "main": "dist/main.js",
+  "module": "src/index.js",
+  "devDependencies": {
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
+  },
+  "dependencies": {
+    "schedule": "github:mwmwmw/Schedge"
+  }
+}

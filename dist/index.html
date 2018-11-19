@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+
+<style id="webmakerstyle">
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+#scale {
+  position: absolute;
+  bottom: 2vh;
+  left: 2vw;
+  z-index:100;
+  color: white;
+  font-family: monospace;
+  font-size: 3vh;
+}
+
+</style>
+</head>
+<body>
+<div id="scale">
+  Scale
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/mwmwmw/Schedge@1.0.0/dist/main.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/mwmwmw/Scream/dist/scream.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/mwmwmw/Scales/Scales.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/mwmwmw/Mizzy/dist/mizzy.js"></script>
+<script src="js/main.js"> </script>
+<script>
+
+let init = Math.floor(Math.random() * scales.length);
+var scale = scales[init];
+
+console.log(scale)
+
+// var theSong = MusicGenerator.generateSong(scale);
+
+// const DURATION = 2.5;
+var s = MusicGenerator.generateScale([2,2,1,2,2,2,1,], 45, 6);
+var c = MusicGenerator.computeChords(s,[0,2,4]);
+var d = [c[0], c[1], c[2], c[3]];
+console.log(s, c)
+
+function procTick (note, index) {
+	if(note && note > -1) {
+		const vel = 100;
+    const note_on = Mizzy.Generate.NoteEvent(Mizzy.NOTE_ON, note, vel);
+    m.sendMidiMessage(note_on, 1);
+    const note_off = Mizzy.Generate.NoteEvent(Mizzy.NOTE_OFF, note, 0);
+    setTimeout(()=> m.sendMidiMessage(note_off, 1), interval - 50)
+	} 
+}
+
+
+
+setInterval(()=>{ 
+    console.log(MusicGenerator.identifyChordType(c[index]))
+    
+    c[index].map(n=>{
+        procTick(n, index);
+    })
+
+  index = (index + 1)%c.length;
+  
+}, 1000)
+
+
+
+var display = document.getElementById("scale");
+
+var interval = 800 * Math.random();
+var period = Math.random();
+var period2 = Math.random();
+var period3 = Math.random();
+
+var widenessLFOspeed = Math.random() * 0.001;
+var filterLFOspeed = Math.random() * 0.001;
+
+const offsets = [ 0, 3, 4, 7]; 
+var offset = offsets[0];
+
+var oscTypes = ["sine", "square", "sawtooth"];
+
+display.innerText = scale.name.split("").reduce((a, b)=>{ return Math.random() > 0.5 ? a + b : a }, "Track: ");
+
+
+function reset() {
+  m.panic();
+  	period = Math.random();
+	period2 = Math.random();
+  start = performance.now();
+	vincent.attack = 0.1 + Math.random() * 0.1; 
+	vincent.decay = Math.random() * 2;
+	vincent.sustain = 0.3 + (Math.random() *0.2);
+	vincent.release = Math.random() * 2;
+	vincent.oscillatorType = oscTypes[Math.floor(Math.random()*oscTypes.length)];
+	interval = 400 + Math.random()*300;
+  scale = scales[Math.floor(Math.random()*scales.length)];
+  display.innerText = scale.name.split("").reduce((a, b)=>{ return Math.random() > 0.5 ? a + b : a }, "Track: ");
+  //notes = generateNotes(scale.semitones);
+  index = 0;
+  widenessLFOspeed = Math.random() * 0.001;
+  filterLFOspeed = Math.random() * 0.001;
+  vincent.effects[1].effect.delayTime.value = Math.random();
+  vincent.effects[1].feedback.gain.value = Math.random()*0.8;
+	vincent.effects[1].wet.value = Math.random();
+}
+
+window.addEventListener("click", ()=>{
+	reset();
+})
+
+// function procTick (note, index) {
+// 	if(note && note > -1) {
+// 		const vel = 100;
+//     const note_on = Mizzy.Generate.NoteEvent(Mizzy.NOTE_ON, note, vel);
+//     m.sendMidiMessage(note_on, 1);
+//     const note_off = Mizzy.Generate.NoteEvent(Mizzy.NOTE_OFF, note, 0);
+//     setTimeout(()=> m.sendMidiMessage(note_off, 1), interval - 50)
+// 	} 
+// }
+
+
+// setInterval(()=>{ 
+//   procTick(theSong[index], index);
+  
+//   if(index%7 === 0) {
+//     procTick(theSong[index]-24, index);
+//   }
+  
+//   index = (index + 1)%theSong.length;
+  
+// }, interval)
+
+var index = 0;
+var start = performance.now();
+var length = (1000*60*2.5);
+var prog = 0;
+
+
+	var Audio = new (window.AudioContext || window.webkitAudioContext)();
+	var vincent = new Scream.Synths.Vincent(Audio, 2, "sawtooth", 0.1, 5);
+	vincent.addEffect(Scream.Effects.Filter);
+	vincent.addEffect(Scream.Effects.Delay);
+	vincent.addEffect(Scream.Effects.Reverb);
+	vincent.attack = 0.01;
+	vincent.decay = 0.2;
+  vincent.sustain = 0.2;
+	vincent.release = 0.2;
+	vincent.output.gain.value = 0.08;
+	vincent.connectEffects();
+
+	vincent.effects[1].feedback.gain.value = 0.1;
+	vincent.effects[1].wet.value = 0.3;
+  
+	var fft = new Scream.Effects.FFT(Audio);
+		fft.mode = 1;
+	fft.connect(Audio.destination);
+	//fft.draw();
+	vincent.connect(fft.input)
+
+// window.addEventListener("mousemove", (e)=>{
+//   vincent.wideness = 1+(e.pageX / window.innerWidth) * 100;
+//   vincent.effects[0].effect.frequency.value = 1000 + (e.pageY / window.innerHeight * 7600);
+// })
+
+setInterval(()=>{
+  vincent.wideness = 1+Math.sin(performance.now()*widenessLFOspeed) * 50;
+  vincent.effects[0].effect.frequency.value = 1000 + ((1+Math.cos(performance.now()*filterLFOspeed)) * 7600);
+  var now = performance.now() - start;
+  prog = Math.sin( (now / length)* Math.PI );
+  if(prog<0) {reset();}
+}, 60)
+
+
+var m = new Mizzy(); 
+	m.initialize().then(() => {
+	//m.bindToAllInputs();
+	m.bindToAllOutputs();
+	m.bindKeyboard();
+	m.keyToggleRange(0,127,(e) => {
+		vincent.NoteOn(e);
+	}, (e) => {
+		vincent.NoteOff(e);
+	}, 1);
+});
+
+function recalcTranspose () {
+  offset = offsets[Math.floor(Math.random()*offsets.length)];
+  setTimeout(()=>recalcTranspose(), interval*16);
+}
+
+
+recalcTranspose();
+
+
+var CanvasContainer = document.createElement("div");
+document.getElementsByTagName("body")[0].appendChild(CanvasContainer);
+fft.addToElement(CanvasContainer);
+
+
+</script>
+</body>
+</html>
