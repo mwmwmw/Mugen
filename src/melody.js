@@ -1,5 +1,26 @@
 import { check } from "./constants";
 
+
+export const pickRandomNotes = (scale, probability) => {
+  let notes = scale.slice();
+  return notes.filter(n => {
+    if (check(probability)) return false;
+    return true;
+  });
+}
+
+export const mutatePattern = (pattern, notes) => {
+  let newPattern = pattern.slice();
+
+  newPattern.map((n, i) => {
+    newPattern[i] = check(i / newPattern.length)
+      ? newPattern[i]
+      : notes[Math.floor(Math.random() * notes.length)];
+  });
+
+  return newPattern;
+};
+
 export const pickMelodyNotes = scale => {
     let notes = scale.slice();
     return notes.filter(n => {
@@ -38,14 +59,3 @@ export const pickMelodyNotes = scale => {
     return sequence;
   };
   
-  export const mutatePattern = (pattern, notes) => {
-    let newPattern = pattern.slice();
-  
-    newPattern.map((n, i) => {
-      newPattern[i] = check(i / newPattern.length)
-        ? newPattern[i]
-        : notes[Math.floor(Math.random() * notes.length)];
-    });
-  
-    return newPattern;
-  };
