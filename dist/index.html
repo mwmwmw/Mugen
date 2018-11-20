@@ -42,44 +42,44 @@
 let init = Math.floor(Math.random() * scales.length);
 var scale = scales[init];
 
+var interval = 4000;
+
 console.log(scale)
 
 // var theSong = MusicGenerator.generateSong(scale);
 
 // const DURATION = 2.5;
-var s = MusicGenerator.generateScale([2,2,1,2,2,2,1,], 45, 6);
-var c = MusicGenerator.computeChords(s,[0,2,4]);
-var d = [c[0], c[1], c[2], c[3]];
-console.log(s, c)
+var s = MusicGenerator.generateScale([2, 1, 4, 3, 2], 58, 6);
+var c = MusicGenerator.computeChords(s,[0, 4, 8, 16]);
 
-function procTick (note, index) {
-	if(note && note > -1) {
+function procTick (note, index, channel = 1, interval = 3000) {
+  if(note && note > -1) {
 		const vel = 100;
     const note_on = Mizzy.Generate.NoteEvent(Mizzy.NOTE_ON, note, vel);
-    m.sendMidiMessage(note_on, 1);
+    m.sendMidiMessage(note_on, channel);
     const note_off = Mizzy.Generate.NoteEvent(Mizzy.NOTE_OFF, note, 0);
-    setTimeout(()=> m.sendMidiMessage(note_off, 1), interval - 50)
+    setTimeout(()=> m.sendMidiMessage(note_off, channel), interval)
 	} 
 }
 
-
-
-setInterval(()=>{ 
-    console.log(MusicGenerator.identifyChordType(c[index]))
-    
-    c[index].map(n=>{
+setInterval(()=>{
+    console.log(identifyChordType(c[index]))
+    c[index].map((n,i)=>{
+        if(i === 0) {procTick(n-24, index); return;}
         procTick(n, index);
     })
-
   index = (index + 1)%c.length;
-  
-}, 1000)
+}, interval)
+
+setInterval(()=>{
+    procTick(c[index][Math.floor(Math.random()*c[index].length)]+24, index, 2, interval/32-50);
+}, interval/32)
 
 
 
 var display = document.getElementById("scale");
 
-var interval = 800 * Math.random();
+
 var period = Math.random();
 var period2 = Math.random();
 var period3 = Math.random();
@@ -105,7 +105,7 @@ function reset() {
 	vincent.sustain = 0.3 + (Math.random() *0.2);
 	vincent.release = Math.random() * 2;
 	vincent.oscillatorType = oscTypes[Math.floor(Math.random()*oscTypes.length)];
-	interval = 400 + Math.random()*300;
+	interval = 4000;
   scale = scales[Math.floor(Math.random()*scales.length)];
   display.innerText = scale.name.split("").reduce((a, b)=>{ return Math.random() > 0.5 ? a + b : a }, "Track: ");
   //notes = generateNotes(scale.semitones);
@@ -150,7 +150,7 @@ var prog = 0;
 
 
 	var Audio = new (window.AudioContext || window.webkitAudioContext)();
-	var vincent = new Scream.Synths.Vincent(Audio, 2, "sawtooth", 0.1, 5);
+	var vincent = new Scream.Synths.Vincent(Audio, 2, "sine", 0.1, 5);
 	vincent.addEffect(Scream.Effects.Filter);
 	vincent.addEffect(Scream.Effects.Delay);
 	vincent.addEffect(Scream.Effects.Reverb);
@@ -167,8 +167,21 @@ var prog = 0;
 	var fft = new Scream.Effects.FFT(Audio);
 		fft.mode = 1;
 	fft.connect(Audio.destination);
-	//fft.draw();
+	fft.draw();
 	vincent.connect(fft.input)
+
+var v2 = new Scream.Synths.Vincent(Audio, 2, "sawtooth", 0.1, 5);
+  
+v2.addEffect(Scream.Effects.Filter);
+v2.addEffect(Scream.Effects.Delay);
+v2.addEffect(Scream.Effects.Reverb);
+v2.attack = 0.01;
+v2.decay = 0.2;
+v2.sustain = 0.2;
+v2.release = 0.2;
+v2.output.gain.value = 0.08;
+v2.connectEffects();
+  v2.connect(fft.input);
 
 // window.addEventListener("mousemove", (e)=>{
 //   vincent.wideness = 1+(e.pageX / window.innerWidth) * 100;
@@ -193,7 +206,14 @@ var m = new Mizzy();
 		vincent.NoteOn(e);
 	}, (e) => {
 		vincent.NoteOff(e);
-	}, 1);
+  }, 1);
+  m.keyToggleRange(0,127,(e) => {
+    console.log(e)
+		v2.NoteOn(e);
+	}, (e) => {
+    console
+		v2.NoteOff(e);
+	}, 2);
 });
 
 function recalcTranspose () {
