@@ -7,7 +7,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     library: "MusicGenerator",
     //libraryExport: "default",
-    libraryTarget: "window",
+    libraryTarget: "var",
     
   },
   devtool: 'source-map',
