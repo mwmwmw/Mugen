@@ -46,6 +46,10 @@ var interval = 4000;
 
 console.log(scale)
 
+const sort = (a, b) => {
+  return a < b ? -1 : 1;
+}
+
 // var theSong = MusicGenerator.generateSong(scale);
 
 // const DURATION = 2.5;
@@ -63,9 +67,8 @@ function procTick (note, index, channel = 1, interval = 3000) {
 }
 
 setInterval(()=>{
-    console.log(identifyChordType(c[index]))
+    procTick(c[index].sort(sort)[0]-24, index, 3);
     c[index].map((n,i)=>{
-        if(i === 0) {procTick(n-24, index); return;}
         procTick(n, index);
     })
   index = (index + 1)%c.length;
@@ -150,14 +153,14 @@ var prog = 0;
 
 
 	var Audio = new (window.AudioContext || window.webkitAudioContext)();
-	var vincent = new Scream.Synths.Vincent(Audio, 2, "sine", 0.1, 5);
+	var vincent = new Scream.Synths.Vincent(Audio, 2, "sawtooth", 0.1, 5);
 	vincent.addEffect(Scream.Effects.Filter);
 	vincent.addEffect(Scream.Effects.Delay);
 	vincent.addEffect(Scream.Effects.Reverb);
-	vincent.attack = 0.01;
+	vincent.attack = 2;
 	vincent.decay = 0.2;
   vincent.sustain = 0.2;
-	vincent.release = 0.2;
+	vincent.release = 1;
 	vincent.output.gain.value = 0.08;
 	vincent.connectEffects();
 
@@ -165,12 +168,13 @@ var prog = 0;
 	vincent.effects[1].wet.value = 0.3;
   
 	var fft = new Scream.Effects.FFT(Audio);
-		fft.mode = 1;
+    fft.mode = 1;
+    fft.effect.smoothingTimeConstant = 0;
 	fft.connect(Audio.destination);
 	fft.draw();
 	vincent.connect(fft.input)
 
-var v2 = new Scream.Synths.Vincent(Audio, 2, "sawtooth", 0.1, 5);
+var v2 = new Scream.Synths.Vincent(Audio, 2, "square", 0.1, 5);
   
 v2.addEffect(Scream.Effects.Filter);
 v2.addEffect(Scream.Effects.Delay);
@@ -179,9 +183,19 @@ v2.attack = 0.01;
 v2.decay = 0.2;
 v2.sustain = 0.2;
 v2.release = 0.2;
-v2.output.gain.value = 0.08;
+v2.output.gain.value = 0.05;
 v2.connectEffects();
   v2.connect(fft.input);
+
+var v3 = new Scream.Synths.Vincent(Audio, 1, "sine", 0, 5);
+
+v3.attack = 0.01;
+v3.decay = 0.2;
+v3.sustain = 1;
+v3.release = 0.2;
+v3.output.gain.value = 0.1;
+//v3.connectEffects();
+v3.connect(fft.input);
 
 // window.addEventListener("mousemove", (e)=>{
 //   vincent.wideness = 1+(e.pageX / window.innerWidth) * 100;
@@ -201,19 +215,26 @@ var m = new Mizzy();
 	m.initialize().then(() => {
 	//m.bindToAllInputs();
 	m.bindToAllOutputs();
-	m.bindKeyboard();
+  m.bindKeyboard();
+  
 	m.keyToggleRange(0,127,(e) => {
 		vincent.NoteOn(e);
 	}, (e) => {
 		vincent.NoteOff(e);
   }, 1);
+
   m.keyToggleRange(0,127,(e) => {
-    console.log(e)
 		v2.NoteOn(e);
 	}, (e) => {
-    console
 		v2.NoteOff(e);
-	}, 2);
+  }, 2);
+
+  m.keyToggleRange(0,127,(e) => {
+		v3.NoteOn(e);
+	}, (e) => {
+		v3.NoteOff(e);
+  }, 3);
+  
 });
 
 function recalcTranspose () {
