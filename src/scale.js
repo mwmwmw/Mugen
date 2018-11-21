@@ -39,17 +39,11 @@ export const biggestSemitoneLeap = (steps = SCALE_SIZE_IN_STEPS.WESTERN, current
 // generates a random semitone pattern that equal 12
 export const generateSemitonePattern = (length = SCALE_SIZE_IN_STEPS.WESTERN) => {
   let scale = new Array(length).fill(1);
-  let total = 0;
-
-  var i = 0;
-
   while(sum(scale) < 12) {
     scale = scale.map(v=> {
     return  check(0.5) ? v+1 : v
     })
-    i++;
   }
-
   var selector = 0;
   while(sum(scale) > 12) {
     selector = Math.floor(Math.random()*scale.length);
@@ -57,9 +51,6 @@ export const generateSemitonePattern = (length = SCALE_SIZE_IN_STEPS.WESTERN) =>
       scale[selector]--;
     }
   }
-
-  console.log("scale sum",sum(scale)-12)
-
   return scale;
 }
 
