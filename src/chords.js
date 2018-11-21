@@ -26,25 +26,23 @@ export const CHORD_IDENTITIES = {
 }
 
 
-export const computeChords = (scale, chordPattern) => {
+export const fromScale = (scale, chordPattern) => {
     let chords = [];
     scale.map((v, i) => {
-        console.log(v, )
-        chords.push(computeChord(i, scale, chordPattern))
+        chords.push(chordAtIndex(i, scale, chordPattern))
     });
     return chords;
 }
 
-export const computeChord = (index, scale, chordPattern) => {
+export const chordAtIndex = (index, scale, chordIdentity) => {
     let chord = [];
-    chordPattern.map((p) => {
-        console.log(index + p, (index + p) % scale.length)
+    chordIdentity.map((p) => {
         chord.push(scale[(index + p) % scale.length])
     })
     return chord;
 }
 
-export const identifyChordType = (chord) => {
+export const identify = (chord) => {
     let keys = Object.keys(CHORD_IDENTITIES);
     let sortedChord = chord.slice().sort(sort);
     return keys.filter(k => {
@@ -59,4 +57,8 @@ export const matchChord = (chord, chordIdentity) => {
         return n === (chord[i] - rootNote);
     })
     return id.length === chordIdentity.length;
+}
+
+export const bassNote = (chord, bassTranspose = -24) => {
+    return chord.sort(sort)[0] + bassTranspose;
 }
