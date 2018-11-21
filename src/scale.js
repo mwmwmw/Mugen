@@ -1,4 +1,4 @@
-import { sort } from "./constants"
+import { sort, check } from "./constants"
 
 export const rotateScale = (scale, steps) => {
   let array = scale.slice();
@@ -38,14 +38,28 @@ export const biggestSemitoneLeap = (steps = SCALE_SIZE_IN_STEPS.WESTERN, current
 
 // generates a random semitone pattern that equal 12
 export const generateSemitonePattern = (length = SCALE_SIZE_IN_STEPS.WESTERN) => {
-  let scale = new Array(length).fill(0);
+  let scale = new Array(length).fill(1);
   let total = 0;
-  scale.map((v, i)=>{
-    let biggest = biggestSemitoneLeap(length-i, total);
-    let val = Math.ceil(Math.random()*biggest);
-    total += val;
-    scale[i] = val;
-  })
+
+  var i = 0;
+
+  while(sum(scale) < 12) {
+    scale = scale.map(v=> {
+    return  check(0.5) ? v+1 : v
+    })
+    i++;
+  }
+
+  var selector = 0;
+  while(sum(scale) > 12) {
+    selector = Math.floor(Math.random()*scale.length);
+    if(scale[selector] > 1) {
+      scale[selector]--;
+    }
+  }
+
+  console.log("scale sum",sum(scale)-12)
+
   return scale;
 }
 
