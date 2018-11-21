@@ -45,13 +45,11 @@ var scale = scales[init];
 var interval = 4000;
 
 
-var pat = MusicGenerator.scale.generateSemitonePattern();
-console.log(pat)
+var pat = MusicGenerator.scale.generateSemitonePattern(3);
 
-var s = MusicGenerator.scale.generate(MusicGenerator.scale.generateSemitonePattern(), 58, 7);
-var c = MusicGenerator.chords.fromScale(s,[0, 3, 7]);
-
-console.log(MusicGenerator.scale.extractRawSemitonePattern(s));
+var s = MusicGenerator.scale.generate(pat, 58, 7);
+var b = MusicGenerator.scale.generate(pat, 58-24, 4);
+var c = MusicGenerator.chords.fromScale(s,[0, 1]);
 
 function procTick (note, index, channel = 1, interval = 3000) {
   if(note && note > -1) {
@@ -64,8 +62,8 @@ function procTick (note, index, channel = 1, interval = 3000) {
 }
 
 setInterval(()=>{
-  console.log(MusicGenerator.chords.bassNote(c[index]));
-    procTick(MusicGenerator.chords.bassNote(c[index]), index, 3);
+  console.log(index)
+    procTick(b[index%b.length], index, 3);
     c[index].map((n,i)=>{
         procTick(n, index);
     })
