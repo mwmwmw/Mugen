@@ -42,22 +42,14 @@
 let init = Math.floor(Math.random() * scales.length);
 var scale = scales[init];
 
-console.log(scales.length)
-
-scales = scales.filter(s=>!MusicGenerator.scale.fitsOctave(s.semitones));
-
-scales.map((s)=>{
-
-  console.log(s.name, MusicGenerator.scale.octaveRemainder(s.semitones));
-
-})
-
 var interval = 4000;
 
-console.log(scale)
 
-var s = MusicGenerator.scale.generate([2, 1, 4, 3, 2], 58, 7);
-var c = MusicGenerator.chords.fromScale(s,[0, 4, 8, 16]);
+var pat = MusicGenerator.scale.generateSemitonePattern();
+console.log(pat)
+
+var s = MusicGenerator.scale.generate(MusicGenerator.scale.generateSemitonePattern(), 58, 7);
+var c = MusicGenerator.chords.fromScale(s,[0, 3, 7]);
 
 console.log(MusicGenerator.scale.extractRawSemitonePattern(s));
 
