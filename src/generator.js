@@ -1,20 +1,6 @@
-import Schedge from "schedule";
-
 import { check, countValue } from "./constants";
-
-import { generateScale } from "./scale";
-
-import { generateRhythm } from "./rhythm";
-
-
-
-const SONG_PART = {
-  A: "A",
-  B: "B",
-  C: "C",
-  INTRO: "INTRO",
-  OUTRO: "OUTRO"
-};
+import * as scale  from "./scale";
+import * as rhythm from "./rhythm";
 
 export const generateSong = (
   scale,

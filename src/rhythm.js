@@ -1,6 +1,6 @@
 import {
   check
-} from "./constants";
+} from "./utils";
 
 export const generateRhythm = (beats = 4, measure = 4) => {
   let sequence = new Array(beats * measure).fill(0);

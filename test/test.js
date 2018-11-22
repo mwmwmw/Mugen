@@ -1,18 +1,14 @@
 describe("Music Generator", function () {
-
     it("is not undefined", function () {
         assert.equal(MusicGenerator != undefined, true);
     })
-
     it("is an object", function () {
         assert.equal(typeof MusicGenerator === "object", true);
     })
-
 })
 
 
 describe("Scale Processing", function () {
-
     var chromaticscale = MusicGenerator.scale.SCALE_PATTERNS.CHROMATIC;
 
     it("returns notes from semitones", function () {
@@ -35,13 +31,10 @@ describe("Scale Processing", function () {
     it("extracts the Major Scale semitone pattern correctly", function () {
         let scalePattern = MusicGenerator.scale.SCALE_PATTERNS.MAJOR;
         let scale = MusicGenerator.scale.generate(scalePattern, 60, scalePattern.length);
-
         let semitonePattern = MusicGenerator.scale.extractRawSemitonePattern(scale);
-
         semitonePattern.map((n, i) => {
             assert.equal(n, scalePattern[i]);
         })
-
     })
 
     it("extracts the Chromatic Scale semitone pattern correctly", function () {
@@ -63,8 +56,6 @@ describe("Scale Processing", function () {
         let semitonePattern = MusicGenerator.scale.extractRawSemitonePattern(scale);
 
         assert.equal(scale.length - 1, semitonePattern.length);
-
-        console.log(MusicGenerator.scale.SCALE_PATTERNS.DORIAN, MusicGenerator.scale.sum(scalePattern), MusicGenerator.scale.sum(semitonePattern))
 
         for (var i = 0; i < semitonePattern.length; i++) {
             assert.equal(semitonePattern[i], scalePattern[i % scalePattern.length]);
@@ -93,6 +84,14 @@ describe("Scale Processing", function () {
     it("scale.fitsOctave() returns the correct value", function () {
         assert.equal(MusicGenerator.scale.fitsOctave([1, 2, 3]), false);
         assert.equal(MusicGenerator.scale.fitsOctave(MusicGenerator.scale.SCALE_PATTERNS.MAJOR), true);
+    })
+
+    it("generates scales that add up to 12", function() {
+
+        for(var i = 0; i < 1000; i++) {
+        let scale = MusicGenerator.scale.generateSemitonePattern();
+        assert.equal(MusicGenerator.scale.sum(scale), MusicGenerator.c.SEMITONES_IN_OCTAVE);
+        }
     })
 
 })

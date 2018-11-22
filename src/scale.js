@@ -1,23 +1,15 @@
-import { sort, check } from "./constants"
-
 export const rotateScale = (scale, steps) => {
   let array = scale.slice();
   return array.splice(steps, array.length).concat(array.splice(0, steps));
 }
 
-const SEMITONES_IN_OCTAVE = 12;
-
-const MIDI_MIDDLE_C = 60;
-
-const DEFAULT_SCALE_RANGE = 24;
-
-const MAJOR = [2,2,1,2,2,2,1];
-
-export const SCALE_SIZE_IN_STEPS = {
-  WESTERN: 7,
-  PENTATONIC: 5,
-  HEXATONIC: 6,
-}
+import {
+  SEMITONES_IN_OCTAVE,
+  SCALE_SIZE_IN_STEPS,
+  MIDI_MIDDLE_C,
+  DEFAULT_SCALE_RANGE,
+  MAJOR,
+} from "./constants"
 
 export const SCALE_PATTERNS = {
   CHROMATIC: [1,1,1,1,1,1,1,1,1,1,1,1],
@@ -31,24 +23,32 @@ export const SCALE_PATTERNS = {
   PENTA: [2, 3, 2, 2, 3],
 }
 
+import { sort, check } from "./utils"
+
+
+
 // calculates the biggest semitone leap that is possible provided the number of remaining steps
 export const biggestSemitoneLeap = (steps = SCALE_SIZE_IN_STEPS.WESTERN, currentCount = 0, octave = SEMITONES_IN_OCTAVE) => {
   return (octave-currentCount) - steps + 1;
 }
 
 // generates a random semitone pattern that equal 12
-export const generateSemitonePattern = (length = SCALE_SIZE_IN_STEPS.WESTERN,octave = SEMITONES_IN_OCTAVE) => {
+export const generateSemitonePattern = (length = SCALE_SIZE_IN_STEPS.WESTERN, octave = SEMITONES_IN_OCTAVE) => {
   let scale = new Array(length).fill(1);
   while(sum(scale) < octave) {
     scale = scale.map(v=> {
-    return  check(0.5) ? v+1 : v
+    return  check(0.5) ? v+1 : v;
     })
   }
+  return refit(scale);
+}
+
+export const refit = (scale, octave = SEMITONES_IN_OCTAVE) => {
   var selector = 0;
-  while(sum(scale) > octave) {
+  while(sum(scale) != octave) {
     selector = Math.floor(Math.random()*scale.length);
     if(scale[selector] > 1) {
-      scale[selector]--;
+      sum(scale) > octave ? scale[selector]-- : scale[selector]++;
     }
   }
   return scale;
@@ -81,12 +81,12 @@ export const reconstructScale = (notes) => {
 
 }
 
-  export const transposeNotes = (notes, amountInSemitones) => {
-      let newNotes = notes.slice();
-      return newNotes.map((n)=>transpose(n, amountInSemitones)); 
-  }
+export const transposeNotes = (notes, amountInSemitones) => {
+    let newNotes = notes.slice();
+    return newNotes.map((n)=>transpose(n, amountInSemitones)); 
+}
 
-  export const transpose = (note, amount) => {
-    return note + amount;
-  }
+export const transpose = (note, amount) => {
+  return note + amount;
+}
 
