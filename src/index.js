@@ -2,12 +2,13 @@ import * as chord from "./chord";
 import * as scale from "./scale"; 
 import * as melody from "./melody"; 
 import * as utils from "./utils";
+import * as rhythm from "./rhythm"
 
-import { SCALE_PATTENRS } from "./scale";
+import { SCALE_PATTERNS } from "./scale";
 
 import {
-    CHORD_IDENTITIES,
-    CHORD_PATTERNS,
+    CHORD_SEMITONE_PATTERNS,
+    CHORD_SCALE_PATTERNS,
     SEMITONES_IN_OCTAVE,
     MIDI_MIDDLE_C,
     DEFAULT_SCALE_RANGE,
@@ -20,14 +21,15 @@ export {
     chord, 
     scale, 
     utils, 
-    melody, 
-    CHORD_IDENTITIES,
-    CHORD_PATTERNS,
+    melody,
+    rhythm,
+    CHORD_SEMITONE_PATTERNS,
+    CHORD_SCALE_PATTERNS,
     SEMITONES_IN_OCTAVE,
     MIDI_MIDDLE_C,
     DEFAULT_SCALE_RANGE,
     MAJOR,
     SCALE_SIZE_IN_STEPS,
     SONG_PARTS,
-    SCALE_PATTENRS
+    SCALE_PATTERNS
 };

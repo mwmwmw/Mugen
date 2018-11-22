@@ -8,7 +8,6 @@ module.exports = {
     library: "Mugen",
     //libraryExport: "default",
     libraryTarget: "var",
-    
   },
   devtool: 'source-map',
   watch: true,

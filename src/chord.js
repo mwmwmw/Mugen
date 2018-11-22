@@ -1,24 +1,25 @@
 import {
-    CHORD_IDENTITIES
+    CHORD_SCALE_PATTERNS,
+    CHORD_SEMITONE_PATTERNS,
 } from "./constants"
 
 import {
     sort
 } from "./utils"
 
-export const atIndex = (index, scale, chordIdentity) => {
+export const atIndex = (index, scale, chordScalePattern = CHORD_SCALE_PATTERNS.TRIAD) => {
     let chord = [];
-    chordIdentity.map((p) => { 
+    chordScalePattern.map((p) => { 
         chord.push(scale[(index + p) % scale.length])
     })
     return chord;
 } 
 
 
-export const fromScale = (scale, chordPattern) => {
+export const fromScale = (scale, chordScalePattern = CHORD_SCALE_PATTERNS.TRIAD) => {
     let chords = [];
     scale.map((v, i) => {
-        chords.push(atIndex(i, scale, chordPattern))
+        chords.push(atIndex(i, scale, chordScalePattern))
     });
     return chords;
 }
@@ -32,7 +33,7 @@ export const identify = (chord) => {
     })
 }
 
-export const matchChord = (chord, chordIdentity) => {
+export const matchChord = (chord, chordIdentity = CHORD_SEMITONE_PATTERNS.MAJOR) => {
     let rootNote = chord[0]
     let id = chordIdentity.filter((n, i) => {
         return n === (chord[i] - rootNote);

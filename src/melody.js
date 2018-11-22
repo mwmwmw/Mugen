@@ -9,8 +9,9 @@ export const filterRandomNotes = (notes, probability = 0.5) => {
 }
 
 export const randomNote = (notes) => {
-    return shuffle(notes)[0];
-}
+    var randomIndex = Math.floor(Math.random()*notes.length)
+    return notes[randomIndex];
+} 
 
 export const mutatePattern = (pattern, notes) => {
     let newPattern = pattern.slice();

@@ -1,4 +1,5 @@
-export const CHORD_PATTERNS = {
+// patterns
+export const CHORD_SCALE_PATTERNS = {
   PENTA: [0, 2],
   TRIAD: [0, 2, 4],
   SUS2: [0, 1, 4],
@@ -8,7 +9,8 @@ export const CHORD_PATTERNS = {
   ELEVENTH: [0, 2, 4, 6, 8, 10]
 };
 
-export const CHORD_IDENTITIES = {
+// identities
+export const CHORD_SEMITONE_PATTERNS = {
   MAJOR: [0, 4, 7],
   MAJOR_1ST_INVERSION: [0, 5, 9],
   MAJOR_2ND_INVERSION: [0, 3, 8],
@@ -35,7 +37,7 @@ export const SCALE_SIZE_IN_STEPS = {
   HEXATONIC: 6,
 }
 
-const SONG_PART = {
+export const SONG_PARTS = {
   A: "A",
   B: "B",
   C: "C",
