@@ -4,6 +4,11 @@ import {
 } from "./utils";
 
 
+export const generate = (notes, pattern, length = 16) => {
+    
+}
+
+
 export const filterRandomNotes = (notes, probability = 0.5) => {
     return notes.filter(n => check(probability));
 }
