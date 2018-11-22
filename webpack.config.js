@@ -5,7 +5,7 @@ module.exports = {
   output: {
     filename: 'js/main.js',
     path: path.resolve(__dirname, 'dist'),
-    library: "MusicGenerator",
+    library: "Mugen",
     //libraryExport: "default",
     libraryTarget: "var",
     

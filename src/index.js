@@ -1,9 +1,33 @@
-import * as chords from "./chords";
+import * as chord from "./chord";
 import * as scale from "./scale"; 
 import * as melody from "./melody"; 
-//export { generateSong } from "./generator";  
+import * as utils from "./utils";
 
-import  * as utils from "./utils";
-import  * as c from "./constants";
+import { SCALE_PATTENRS } from "./scale";
 
-export { chords, scale, utils, melody, c };
+import {
+    CHORD_IDENTITIES,
+    CHORD_PATTERNS,
+    SEMITONES_IN_OCTAVE,
+    MIDI_MIDDLE_C,
+    DEFAULT_SCALE_RANGE,
+    MAJOR,
+    SCALE_SIZE_IN_STEPS,
+    SONG_PARTS
+} from "./constants";
+
+export { 
+    chord, 
+    scale, 
+    utils, 
+    melody, 
+    CHORD_IDENTITIES,
+    CHORD_PATTERNS,
+    SEMITONES_IN_OCTAVE,
+    MIDI_MIDDLE_C,
+    DEFAULT_SCALE_RANGE,
+    MAJOR,
+    SCALE_SIZE_IN_STEPS,
+    SONG_PARTS,
+    SCALE_PATTENRS
+};

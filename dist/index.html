@@ -44,11 +44,11 @@ var scale = scales[init];
 
 console.log(scales.length)
 
-scales = scales.filter(s=>!MusicGenerator.scale.fitsOctave(s.semitones));
+scales = scales.filter(s=>!Mugen.scale.fitsOctave(s.semitones));
 
 scales.map((s)=>{
 
-  console.log(s.name, MusicGenerator.scale.octaveRemainder(s.semitones));
+  console.log(s.name, Mugen.scale.octaveRemainder(s.semitones));
 
 })
 
@@ -56,10 +56,10 @@ var interval = 4000;
 
 console.log(scale)
 
-var s = MusicGenerator.scale.generate([2, 1, 4, 3, 2], 58, 7);
-var c = MusicGenerator.chords.fromScale(s,[0, 4, 8, 16]);
+var s = Mugen.scale.generate([2, 1, 4, 3, 2], 58, 7);
+var c = Mugen.chord.fromScale(s,[0, 4, 8, 16]);
 
-console.log(MusicGenerator.scale.extractRawSemitonePattern(s));
+console.log(Mugen.scale.extractRawSemitonePattern(s));
 
 function procTick (note, index, channel = 1, interval = 3000) {
   if(note && note > -1) {
@@ -72,8 +72,8 @@ function procTick (note, index, channel = 1, interval = 3000) {
 }
 
 setInterval(()=>{
-  console.log(MusicGenerator.chords.bassNote(c[index]));
-    procTick(MusicGenerator.chords.bassNote(c[index]), index, 3);
+  console.log(Mugen.chord.bassNote(c[index]));
+    procTick(Mugen.chord.bassNote(c[index]), index, 3);
     c[index].map((n,i)=>{
         procTick(n, index);
     })
@@ -81,7 +81,7 @@ setInterval(()=>{
 }, interval)
 
 setInterval(()=>{
-    procTick(MusicGenerator.melody.randomNote(c[index])+24, index, 2, interval/32-50);
+    procTick(Mugen.melody.randomNote(c[index])+24, index, 2, interval/32-50);
 }, interval/32)
 
 

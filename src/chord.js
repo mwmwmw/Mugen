@@ -1,27 +1,26 @@
 import {
-    CHORD_IDENTITIES,
-    CHORD_PATTERNS,
+    CHORD_IDENTITIES
 } from "./constants"
 
 import {
     sort
 } from "./utils"
 
+export const atIndex = (index, scale, chordIdentity) => {
+    let chord = [];
+    chordIdentity.map((p) => { 
+        chord.push(scale[(index + p) % scale.length])
+    })
+    return chord;
+} 
+
 
 export const fromScale = (scale, chordPattern) => {
     let chords = [];
     scale.map((v, i) => {
-        chords.push(chordAtIndex(i, scale, chordPattern))
+        chords.push(atIndex(i, scale, chordPattern))
     });
     return chords;
-}
-
-export const chordAtIndex = (index, scale, chordIdentity) => {
-    let chord = [];
-    chordIdentity.map((p) => {
-        chord.push(scale[(index + p) % scale.length])
-    })
-    return chord;
 }
 
 export const identify = (chord) => {
