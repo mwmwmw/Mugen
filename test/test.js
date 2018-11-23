@@ -103,33 +103,33 @@ describe("Scale Processing", function() {
     }
   });
 
-});
+}); 
 
   describe("Chords", function() {
 
     it("atIndex() returns an array", function() {
-        let scale = Mugen.scale.makeScale();
+        let scale = Mugen.make.scale(); 
         let chord = Mugen.chord.atIndex(0, scale, Mugen.CHORD_SCALE_PATTERNS.TRIAD);
         
         assert.equal(Array.isArray(chord), true);
     })
 
     it("chordAtIndex() returns the correct values", function() {
-        let scale = Mugen.scale.makeScale();
+        let scale = Mugen.make.scale();
         let chord = Mugen.chord.atIndex(0, scale, Mugen.CHORD_SCALE_PATTERNS.TRIAD);
         assert.equal(chord[0], 60);
         assert.equal(chord.length, 3);  
     })
 
     it("fromScale() returns an array of arrays", function() {
-        let scale = Mugen.scale.makeScale();
+        let scale = Mugen.make.scale();
         let chords = Mugen.chord.fromScale(scale, Mugen.CHORD_SCALE_PATTERNS.TRIAD);
         assert.equal(Array.isArray(chords), true);
         assert.equal(Array.isArray(chords[0]), true);
-    })
+    }) 
 
     it("identify() returns the correct chord type", function() {
-        let scale = Mugen.scale.makeScale();
+        let scale = Mugen.make.scale();
         let chord = Mugen.chord.atIndex(1, scale, Mugen.CHORD_SCALE_PATTERNS.TRIAD);
         assert.equal(Array.isArray(chord), true);
     })
