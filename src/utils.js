@@ -17,3 +17,7 @@ export const shuffle = (array) => {
   }
   return shuffledArray;
 }
+
+export const getRandom = (array) => {
+    return array[Math.floor(Math.random()*array.length)];
+}
