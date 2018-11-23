@@ -1,42 +1,49 @@
-import { check, countValue } from "./constants";
-import * as scale  from "./scale";
+import { check, countValue } from "./utils";
+import * as chord from "./chord";
+import * as utils from "./utils";
+import * as scales  from "./scale";
 import * as rhythm from "./rhythm";
+import {SEMITONES_IN_OCTAVE, SONG_PARTS, MAJOR, BEATS, MEASURES, CHORD_PROGRESSIONS} from "./constants";
 
-export const generateSong = (
-  scale,
-  beats = 4,
-  measure = 4,
-  structure = ["A", "B", "A", "C", "A", "B"]
+export const scale = (rootNote = 60, octaves = 2, pattern = MAJOR) =>{
+  return scales.generate(pattern, rootNote, SEMITONES_IN_OCTAVE*octaves);
+}
+
+export const progression = (s = scale()) => {
+  let progs = Object.keys(CHORD_PROGREsSSIONS);
+  let prog =  CHORD_PROGRESSIONS[utils.getRandom(progs)];
+  let chords = chord.fromScale(s);
+
+  return prog.map((v)=>chords[v]);
+}
+
+export const song = (
+  s = scale(),
+  beats = BEATS,
+  measure = MEASURES,
+  parts = SONG_PARTS
 ) => {
-  let rhythm = generateRhythm(beats, measure);
+  let melodicStructure = rhythm.generate(beats, measure);
+  let counterrhythm = rhythm.syncopate(melodicStructure);
 
-  let noteCount = countValue(rhythm, true);
+  let partkeys= Object.keys(parts);
 
-  console.log(noteCount);
+  let chordsA = progression(s);
+  let bassA = chord.bassNote(chordsA);
+
+  let noteCount = countValue(melodicStructure, true); 
 
   let length = beats * measure;
-  let allNotes = generateScale(scale.semitones);
+  let melodyNotes = pickMelodyNotes(scale);
 
-  let melodyNotes = pickMelodyNotes(allNotes);
-
-  let seqA = calculateSequence(melodyNotes, length, rhythm);
-  let seqB = calculateSequence(melodyNotes, length, rhythm);
-  let melodyNotes2 = pickMelodyNotes(allNotes);
-  let seqC = calculateSequence(melodyNotes2, length * 4, rhythm, -5);
+  let seqA = melody.generate(melodyNotes, length, melodicStructure);
+  let seqB = melody.generate(melodyNotes, length, melodicStructure);
+  let melodyNotes2 = pickMelodyNotes(s);
+  let seqC = melody.generate(melodyNotes2, length * 4, melodicStructure, -5);
 
   return []
-    .concat(seqA)
-    .concat(mutatePattern(seqA, seqB))
-    .concat(seqA)
-    .concat(mutatePattern(seqA, seqC))
-    .concat(seqB)
-    .concat(mutatePattern(seqB, seqA))
-    .concat(seqB)
-    .concat(mutatePattern(seqB, allNotes))
-    .concat(mutatePattern(seqA, seqB))
-    .concat(seqC)
-    .concat(seqA)
-    .concat(mutatePattern(seqA, seqB))
-    .concat(seqB)
-    .concat(mutatePattern(seqB, seqA));
 };
+
+export const part = ({ chords, bass, rhythm}) => {
+  return [1]
+}

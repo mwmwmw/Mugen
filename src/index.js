@@ -3,6 +3,7 @@ import * as scale from "./scale";
 import * as melody from "./melody"; 
 import * as utils from "./utils";
 import * as rhythm from "./rhythm"
+import * as make from "./generator";
 
 import { SCALE_PATTERNS } from "./scale";
 
@@ -17,7 +18,8 @@ import {
     SONG_PARTS
 } from "./constants";
 
-export { 
+export {
+    make,
     chord, 
     scale, 
     utils, 
