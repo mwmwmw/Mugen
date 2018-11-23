@@ -23,11 +23,21 @@ export const CHORD_SEMITONE_PATTERNS = {
   AUGMENTED: [0, 4, 8]
 }
 
+export const CHORD_PROGRESSIONS = {
+  "I IV V V" : [0, 3, 4, 4],
+  "I I IV V" : [0, 0, 3, 4],
+  "I VI IV V" : [0, 5, 3, 4],
+  "V IV I I" : [4, 3, 0, 0],
+  "CANNON" : [0, 4, 5, 2, 3, 0, 3, 4]
+}
+
 export const SEMITONES_IN_OCTAVE = 12;
 
 export const MIDI_MIDDLE_C = 60;
 
 export const DEFAULT_SCALE_RANGE = 24;
+
+export const DEFAULT_PATTERN_LENGTH = 16;
 
 export const MAJOR = [2,2,1,2,2,2,1];
 
@@ -36,6 +46,9 @@ export const SCALE_SIZE_IN_STEPS = {
   PENTATONIC: 5,
   HEXATONIC: 6,
 }
+
+export const BEATS = 4;
+export const MEASURES = 4;
 
 export const SONG_PARTS = {
   A: "A",
