@@ -89,7 +89,3 @@ export const transposeNotes = (notes, amountInSemitones) => {
 export const transpose = (note, amount) => {
   return note + amount;
 }
-
-export const makeScale = () =>{
-   return generate(generateSemitonePattern(), 60, 24);
-}
