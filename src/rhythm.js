@@ -2,7 +2,7 @@ import {
   check
 } from "./utils";
 
-export const generateRhythm = (beats = 4, measure = 4) => {
+export const generate = (beats = 4, measure = 4) => {
   let sequence = new Array(beats * measure).fill(0);
   sequence.map((n, i) => {
     let pulse = 1 / ((i % beats) + 1);
