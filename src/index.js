@@ -3,7 +3,7 @@ import * as scale from "./scale";
 import * as melody from "./melody"; 
 import * as utils from "./utils";
 import * as rhythm from "./rhythm"
-import * as make from "./generator";
+import * as make from "./make";
 
 import { SCALE_PATTERNS } from "./scale";
 
