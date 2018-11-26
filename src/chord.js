@@ -15,6 +15,13 @@ export const atIndex = (index, scale, chordScalePattern = CHORD_SCALE_PATTERNS.T
     return chord;
 } 
 
+export const fromNote = (note, chordPattern = CHORD_SEMITONE_PATTERNS.MAJOR) => {
+    let chord = [];
+    chordPattern.map(p=>{
+        chord.push(note+p);
+    })
+    return chord;
+}
 
 export const fromScale = (scale, chordScalePattern = CHORD_SCALE_PATTERNS.TRIAD) => {
     let chords = [];
